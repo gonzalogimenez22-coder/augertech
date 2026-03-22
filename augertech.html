@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AugerTech - Tecnología que avanza contigo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0a0a0a;
+    --accent: #00c896;
+    --accent2: #0057ff;
+    --bg: #f5f5f0;
+    --white: #ffffff;
+    --gray: #888;
+    --light: #eeede8;
+    --danger: #e03535;
+    --card-radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--primary); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 1rem;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  .logo span { color: var(--accent); }
+  .nav-search {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+  }
+  .nav-search input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 30px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-search input::placeholder { color: rgba(255,255,255,0.4); }
+  .nav-search svg { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+  .nav-actions { display: flex; align-items: center; gap: 1rem; }
+  .cart-btn {
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .cart-btn:hover { opacity: 0.85; }
+  .cart-count {
+    background: var(--primary);
+    color: var(--accent);
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--primary);
+    color: white;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,200,150,0.15) 0%, transparent 70%);
+    top: -200px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p { color: rgba(255,255,255,0.6); font-size: 1.1rem; max-width: 500px; margin: 0 auto 2rem; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    background: transparent;
+    color: white;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: white; }
+
+  /* OFFERS BANNER */
+  .offers-banner {
+    background: linear-gradient(135deg, #0057ff, #00c896);
+    color: white;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* MAIN CONTENT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  /* FILTERS */
+  .filters-bar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    font-weight: 500;
+    margin-right: 0.25rem;
+  }
+  .filter-btn {
+    background: var(--white);
+    border: 1.5px solid transparent;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--primary);
+  }
+  .filter-btn:hover { border-color: var(--accent); }
+  .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-title .tag {
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .product-card {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+  .product-card.hidden { display: none; }
+  .product-img {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    background: var(--light);
+    position: relative;
+  }
+  .badge-offer {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--danger);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .badge-new {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--accent2);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 30px;
+  }
+  .product-info { padding: 1rem; }
+  .product-cat {
+    font-size: 0.75rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.3rem;
+  }
+  .product-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .product-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+  .price-old { font-size: 0.85rem; color: var(--gray); text-decoration: line-through; }
+  .add-cart-btn {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .add-cart-btn:hover { background: var(--accent); color: var(--primary); }
+
+  /* NO RESULTS */
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray);
+    display: none;
+    grid-column: 1/-1;
+  }
+  .no-results.show { display: block; }
+
+  /* CART MODAL */
+  .cart-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    justify-content: flex-end;
+  }
+  .cart-overlay.open { display: flex; }
+  .cart-panel {
+    background: white;
+    width: min(420px, 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  .cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cart-header h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.3rem; }
+  .close-cart {
+    background: var(--light);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--gray); }
+  .cart-empty div { font-size: 3rem; margin-bottom: 0.5rem; }
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--light);
+  }
+  .cart-item-emoji { font-size: 2.2rem; width: 50px; text-align: center; flex-shrink: 0; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .cart-item-price { color: var(--accent2); font-weight: 600; font-size: 0.9rem; }
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .qty-btn {
+    background: var(--light);
+    border: none;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600;
+  }
+  .qty-num { font-weight: 600; min-width: 20px; text-align: center; }
+  .remove-btn { background: none; border: none; cursor: pointer; color: var(--gray); padding: 4px; font-size: 1rem; }
+  .cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--light);
+    background: white;
+  }
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .cart-total-label { font-size: 0.9rem; color: var(--gray); }
+  .cart-total-price { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.5rem; }
+  .checkout-btn {
+    width: 100%;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 0.85rem;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .checkout-btn:hover { opacity: 0.85; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 300;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* CONTACT SECTION */
+  .contact-section {
+    background: var(--primary);
+    color: white;
+    padding: 4rem 2rem;
+  }
+  .contact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-info h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .contact-info h2 em { color: var(--accent); font-style: normal; }
+  .contact-info p { color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 2rem; font-size: 0.95rem; }
+  .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.75);
+  }
+  .contact-detail-item .icon {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .wa-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    margin-top: 1rem;
+  }
+  .wa-contact-btn:hover { opacity: 0.85; }
+
+  /* CONTACT FORM */
+  .contact-form-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+  .contact-form-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+  .form-group select option { background: #1a1a1a; color: white; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .submit-btn {
+    width: 100%;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 0.85rem;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+  .submit-btn:hover { opacity: 0.85; }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .form-success .check { font-size: 3rem; margin-bottom: 0.75rem; }
+  .form-success h4 { font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .form-success p { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+
+  /* WHATSAPP FLOATING BUTTON */
+  .wa-float {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+  .wa-bubble {
+    display: none;
+    background: white;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    max-width: 280px;
+    position: relative;
+    animation: popUp 0.25s ease;
+  }
+  @keyframes popUp { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .wa-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; right: 22px;
+    width: 16px; height: 16px;
+    background: white;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .wa-bubble.open { display: block; }
+  .wa-bubble-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .wa-avatar {
+    width: 36px; height: 36px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    color: white;
+    flex-shrink: 0;
+  }
+  .wa-bubble-name { font-weight: 600; font-size: 0.85rem; color: #111; }
+  .wa-bubble-status { font-size: 0.72rem; color: #25d366; }
+  .wa-bubble-msg { font-size: 0.85rem; color: #444; line-height: 1.5; margin-bottom: 0.75rem; }
+  .wa-bubble-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+    margin-bottom: 0.5rem;
+    color: #111;
+  }
+  .wa-bubble-send {
+    width: 100%;
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .wa-main-btn {
+    width: 58px; height: 58px;
+    background: #25d366;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 1.6rem;
+  }
+  .wa-main-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
+  .wa-close { position: absolute; top: 0.6rem; right: 0.75rem; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1rem; }
+
+  @media (max-width: 700px) {
+    .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+    margin-top: 4rem;
+  }
+  footer strong { color: white; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .container { padding: 1.25rem; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .filters-bar { gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- OFFERS BANNER -->
+<div class="offers-banner">
+  🔥 ¡Ofertas de temporada! Hasta 40% de descuento en productos seleccionados — <strong>Envío gratis</strong> en compras mayores a $50
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Auger<span>Tech</span></div>
+  <div class="nav-search">
+    <svg width="14" height="14" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="searchProducts(this.value)">
+  </div>
+  <div class="nav-actions">
+    <a href="#contacto" style="color:rgba(255,255,255,0.7); font-size:0.9rem; text-decoration:none; white-space:nowrap; display:none;" id="navContactLink">Contacto</a>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Carrito
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>La <em>tecnología</em><br>que necesitas,<br>al mejor precio</h1>
+  <p>Celulares, laptops, accesorios y mucho más. Todo en un solo lugar.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Ver catálogo</button>
+    <button class="btn-outline" onclick="filterProducts('ofertas')">Ver ofertas</button>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<div class="container" id="catalogo">
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <span class="filter-label">Categoría:</span>
+    <button class="filter-btn active" onclick="filterProducts('todos')" id="f-todos">Todos</button>
+    <button class="filter-btn" onclick="filterProducts('celulares')" id="f-celulares">📱 Celulares</button>
+    <button class="filter-btn" onclick="filterProducts('laptops')" id="f-laptops">💻 Laptops</button>
+    <button class="filter-btn" onclick="filterProducts('accesorios')" id="f-accesorios">🎧 Accesorios</button>
+    <button class="filter-btn" onclick="filterProducts('gadgets')" id="f-gadgets">⌚ Gadgets</button>
+    <button class="filter-btn" onclick="filterProducts('ofertas')" id="f-ofertas">🔥 Ofertas</button>
+  </div>
+
+  <!-- SECTION TITLE -->
+  <div class="section-title" id="sectionTitle">
+    Todos los productos <span class="tag">Catálogo</span>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="product-grid" id="productGrid">
+
+    <!-- CELULARES -->
+    <div class="product-card" data-cat="celulares" data-name="Samsung Galaxy S24" data-oferta="false">
+      <div class="product-img">📱<span class="badge-new">Nuevo</span></div>
+      <div class="product-info">
+        <div class="product-cat">Celulares</div>
+        <div class="product-name">Samsung Galaxy S24</div>
+        <div class="product-price-row">
+          <span class="price">$799.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Samsung Galaxy S24', 799.99, '📱')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="celulares" data-name="iPhone 15 Pro" data-oferta="false">
+      <div class="product-img">📱<span class="badge-new">Nuevo</span></div>
+      <div class="product-info">
+        <div class="product-cat">Celulares</div>
+        <div class="product-name">iPhone 15 Pro</div>
+        <div class="product-price-row">
+          <span class="price">$999.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('iPhone 15 Pro', 999.99, '📱')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="celulares" data-name="Motorola Edge 40" data-oferta="true">
+      <div class="product-img">📱<span class="badge-offer">-25%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Celulares</div>
+        <div class="product-name">Motorola Edge 40</div>
+        <div class="product-price-row">
+          <span class="price">$374.99</span>
+          <span class="price-old">$499.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Motorola Edge 40', 374.99, '📱')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="celulares" data-name="Xiaomi 13T Pro" data-oferta="true">
+      <div class="product-img">📱<span class="badge-offer">-30%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Celulares</div>
+        <div class="product-name">Xiaomi 13T Pro</div>
+        <div class="product-price-row">
+          <span class="price">$349.99</span>
+          <span class="price-old">$499.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Xiaomi 13T Pro', 349.99, '📱')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- LAPTOPS -->
+    <div class="product-card" data-cat="laptops" data-name="MacBook Air M2" data-oferta="false">
+      <div class="product-img">💻<span class="badge-new">Nuevo</span></div>
+      <div class="product-info">
+        <div class="product-cat">Laptops</div>
+        <div class="product-name">MacBook Air M2</div>
+        <div class="product-price-row">
+          <span class="price">$1,099.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('MacBook Air M2', 1099.99, '💻')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="laptops" data-name="Dell XPS 15" data-oferta="true">
+      <div class="product-img">💻<span class="badge-offer">-20%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Laptops</div>
+        <div class="product-name">Dell XPS 15</div>
+        <div class="product-price-row">
+          <span class="price">$1,199.99</span>
+          <span class="price-old">$1,499.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Dell XPS 15', 1199.99, '💻')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="laptops" data-name="Lenovo ThinkPad X1" data-oferta="false">
+      <div class="product-img">💻</div>
+      <div class="product-info">
+        <div class="product-cat">Laptops</div>
+        <div class="product-name">Lenovo ThinkPad X1</div>
+        <div class="product-price-row">
+          <span class="price">$1,349.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Lenovo ThinkPad X1', 1349.99, '💻')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="laptops" data-name="HP Pavilion 15" data-oferta="true">
+      <div class="product-img">💻<span class="badge-offer">-15%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Laptops</div>
+        <div class="product-name">HP Pavilion 15</div>
+        <div class="product-price-row">
+          <span class="price">$679.99</span>
+          <span class="price-old">$799.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('HP Pavilion 15', 679.99, '💻')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ACCESORIOS -->
+    <div class="product-card" data-cat="accesorios" data-name="AirPods Pro 2" data-oferta="false">
+      <div class="product-img">🎧<span class="badge-new">Nuevo</span></div>
+      <div class="product-info">
+        <div class="product-cat">Accesorios</div>
+        <div class="product-name">AirPods Pro 2</div>
+        <div class="product-price-row">
+          <span class="price">$249.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('AirPods Pro 2', 249.99, '🎧')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="accesorios" data-name="Sony WH-1000XM5" data-oferta="true">
+      <div class="product-img">🎧<span class="badge-offer">-40%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Accesorios</div>
+        <div class="product-name">Sony WH-1000XM5</div>
+        <div class="product-price-row">
+          <span class="price">$209.99</span>
+          <span class="price-old">$349.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Sony WH-1000XM5', 209.99, '🎧')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="accesorios" data-name="Teclado Mecánico Logitech" data-oferta="false">
+      <div class="product-img">⌨️</div>
+      <div class="product-info">
+        <div class="product-cat">Accesorios</div>
+        <div class="product-name">Teclado Mecánico Logitech</div>
+        <div class="product-price-row">
+          <span class="price">$129.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Teclado Mecánico Logitech', 129.99, '⌨️')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="accesorios" data-name="Monitor Samsung 27\" 4K" data-oferta="true">
+      <div class="product-img">🖥️<span class="badge-offer">-18%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Accesorios</div>
+        <div class="product-name">Monitor Samsung 27" 4K</div>
+        <div class="product-price-row">
+          <span class="price">$409.99</span>
+          <span class="price-old">$499.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Monitor Samsung 27 4K', 409.99, '🖥️')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- GADGETS -->
+    <div class="product-card" data-cat="gadgets" data-name="Apple Watch Series 9" data-oferta="false">
+      <div class="product-img">⌚<span class="badge-new">Nuevo</span></div>
+      <div class="product-info">
+        <div class="product-cat">Gadgets</div>
+        <div class="product-name">Apple Watch Series 9</div>
+        <div class="product-price-row">
+          <span class="price">$399.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Apple Watch Series 9', 399.99, '⌚')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="gadgets" data-name="Tablet Samsung Tab S9" data-oferta="true">
+      <div class="product-img">📟<span class="badge-offer">-25%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Gadgets</div>
+        <div class="product-name">Tablet Samsung Tab S9</div>
+        <div class="product-price-row">
+          <span class="price">$599.99</span>
+          <span class="price-old">$799.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Tablet Samsung Tab S9', 599.99, '📟')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="gadgets" data-name="Bocina JBL Charge 5" data-oferta="false">
+      <div class="product-img">🔊</div>
+      <div class="product-info">
+        <div class="product-cat">Gadgets</div>
+        <div class="product-name">Bocina JBL Charge 5</div>
+        <div class="product-price-row">
+          <span class="price">$149.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Bocina JBL Charge 5', 149.99, '🔊')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="gadgets" data-name="Cámara GoPro Hero 12" data-oferta="true">
+      <div class="product-img">📷<span class="badge-offer">-20%</span></div>
+      <div class="product-info">
+        <div class="product-cat">Gadgets</div>
+        <div class="product-name">Cámara GoPro Hero 12</div>
+        <div class="product-price-row">
+          <span class="price">$319.99</span>
+          <span class="price-old">$399.99</span>
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('Cámara GoPro Hero 12', 319.99, '📷')">+ Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="no-results" id="noResults">
+      😕 No se encontraron productos.<br>Intenta con otro término.
+    </div>
+
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOnOverlay(event)">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>🛒 Mi carrito</h2>
+      <button class="close-cart" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <div>🛒</div>
+        <p>Tu carrito está vacío</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-price" id="cartTotal">$0.00</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceder al pago →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section" id="contacto">
+  <div class="contact-inner">
+    <!-- LEFT: Info -->
+    <div class="contact-info">
+      <h2>¿Tienes alguna<br><em>pregunta?</em></h2>
+      <p>Estamos aquí para ayudarte. Escríbenos por el formulario, por WhatsApp o visítanos. Te respondemos a la brevedad.</p>
+      <div class="contact-details">
+        <div class="contact-detail-item">
+          <div class="icon">📍</div>
+          <span>Tu dirección aquí, Ciudad, País</span>
+        </div>
+        <div class="contact-detail-item">
+          <div class="icon">📞</div>
+          <span>+54 9 XXX XXX XXXX</span>
+        </div>
+        <div class="contact-detail-item">
+          <div class="icon">📧</div>
+          <span>contacto@augertech.com</span>
+        </div>
+        <div class="contact-detail-item">
+          <div class="icon">🕐</div>
+          <span>Lun – Sáb: 9:00 am – 7:00 pm</span>
+        </div>
+      </div>
+      <a class="wa-contact-btn" onclick="openWABubble()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Chatear por WhatsApp
+      </a>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="contact-form-box">
+      <h3>✉️ Envíanos un mensaje</h3>
+      <div id="contactFormWrap">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="cf-name" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="cf-phone" placeholder="+54 9 ...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="cf-email" placeholder="correo@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label>Asunto</label>
+          <select id="cf-subject">
+            <option value="">Selecciona un tema...</option>
+            <option>Consulta de producto</option>
+            <option>Disponibilidad de stock</option>
+            <option>Soporte técnico</option>
+            <option>Envíos y devoluciones</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea id="cf-msg" rows="4" placeholder="Escribe tu mensaje aquí..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="sendContactForm()">Enviar mensaje →</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="check">✅</div>
+        <h4>¡Mensaje enviado!</h4>
+        <p>Gracias por contactarnos. Te responderemos a la brevedad, también puedes escribirnos directo por WhatsApp.</p>
+        <a class="wa-contact-btn" style="margin-top:1rem; justify-content:center;" onclick="openWABubble()">
+          Seguir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<div class="wa-float" id="waFloat">
+  <div class="wa-bubble" id="waBubble">
+    <button class="wa-close" onclick="closeWABubble()">✕</button>
+    <div class="wa-bubble-header">
+      <div class="wa-avatar">💬</div>
+      <div>
+        <div class="wa-bubble-name">AugerTech</div>
+        <div class="wa-bubble-status">● En línea</div>
+      </div>
+    </div>
+    <div class="wa-bubble-msg">
+      ¡Hola! 👋 ¿En qué podemos ayudarte hoy? Escribe tu consulta y te respondemos al instante.
+    </div>
+    <input class="wa-bubble-input" type="text" id="waMsg" placeholder="Escribe tu mensaje...">
+    <button class="wa-bubble-send" onclick="sendWhatsApp()">Abrir WhatsApp →</button>
+  </div>
+  <button class="wa-main-btn" onclick="toggleWABubble()" title="Chatear por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+  </button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>AugerTech</strong> &mdash; Tecnología que avanza contigo<br>
+  <small style="display:block; margin-top:0.5rem;">
+    <a href="#contacto" style="color:rgba(255,255,255,0.5); text-decoration:none;">Contacto</a> &nbsp;|&nbsp;
+    <a onclick="openWABubble()" style="color:#25d366; cursor:pointer; text-decoration:none;">WhatsApp</a>
+  </small>
+  <small style="display:block; margin-top:0.5rem;">© 2025 AugerTech. Todos los derechos reservados.</small>
+</footer>
+
+<script>
+  let cart = [];
+  let currentFilter = 'todos';
+
+  function filterProducts(cat) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('f-' + cat);
+    if (btn) btn.classList.add('active');
+
+    const titles = {
+      todos: 'Todos los productos',
+      celulares: 'Celulares y tablets',
+      laptops: 'Computadoras y laptops',
+      accesorios: 'Accesorios',
+      gadgets: 'Gadgets',
+      ofertas: '🔥 Ofertas especiales'
+    };
+    const tags = {
+      todos: 'Catálogo', celulares: 'Celulares', laptops: 'Laptops',
+      accesorios: 'Accesorios', gadgets: 'Gadgets', ofertas: 'Descuentos'
+    };
+    document.getElementById('sectionTitle').innerHTML =
+      `${titles[cat]} <span class="tag">${tags[cat]}</span>`;
+
+    const cards = document.querySelectorAll('.product-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const cardCat = card.dataset.cat;
+      const isOffer = card.dataset.oferta === 'true';
+      let show = false;
+      if (cat === 'todos') show = true;
+      else if (cat === 'ofertas') show = isOffer;
+      else show = cardCat === cat;
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.getElementById('noResults').classList.toggle('show', visible === 0);
+  }
+
+  function searchProducts(query) {
+    const q = query.toLowerCase().trim();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('f-todos').classList.add('active');
+    currentFilter = 'todos';
+    document.getElementById('sectionTitle').innerHTML =
+      q ? `Resultados: "<em>${query}</em>" <span class="tag">Búsqueda</span>` :
+          `Todos los productos <span class="tag">Catálogo</span>`;
+    const cards = document.querySelectorAll('.product-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const cat = card.dataset.cat.toLowerCase();
+      const show = !q || name.includes(q) || cat.includes(q);
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.getElementById('noResults').classList.toggle('show', visible === 0);
+  }
+
+  function addToCart(name, price, emoji) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, emoji, qty: 1 });
+    }
+    updateCartUI();
+    showToast(`✅ ${name} agregado al carrito`);
+  }
+
+  function updateCartUI() {
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+    const container = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      container.innerHTML = '<div class="cart-empty"><div>🛒</div><p>Tu carrito está vacío</p></div>';
+      return;
+    }
+    container.innerHTML = cart.map((item, idx) => `
+      <div class="cart-item">
+        <div class="cart-item-emoji">${item.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="removeItem(${idx})" title="Eliminar">🗑️</button>
+      </div>
+    `).join('');
+  }
+
+  function changeQty(idx, delta) {
+    cart[idx].qty += delta;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    updateCartUI();
+  }
+
+  function removeItem(idx) {
+    cart.splice(idx, 1);
+    updateCartUI();
+  }
+
+  function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
+  function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+  function closeCartOnOverlay(e) { if (e.target === document.getElementById('cartOverlay')) closeCart(); }
+
+  function checkout() {
+    if (cart.length === 0) { showToast('⚠️ Tu carrito está vacío'); return; }
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    alert(`✅ ¡Gracias por tu compra en AugerTech!\n\nTotal: $${total.toFixed(2)}\n\nEn una tienda real, aquí se procesaría el pago.`);
+    cart = [];
+    updateCartUI();
+    closeCart();
+  }
+
+  // ── WHATSAPP CONFIG ────────────────────────────────────────────────
+  // 👉 CAMBIA ESTE NÚMERO por el tuyo (solo dígitos, con código de país)
+  const WA_NUMBER = '5491100000000';
+  const WA_DEFAULT_MSG = '¡Hola! Estoy interesado en productos de AugerTech. ¿Me pueden ayudar?';
+
+  function toggleWABubble() {
+    const b = document.getElementById('waBubble');
+    b.classList.toggle('open');
+    if (b.classList.contains('open')) setTimeout(() => document.getElementById('waMsg').focus(), 200);
+  }
+  function openWABubble() { document.getElementById('waBubble').classList.add('open'); setTimeout(() => document.getElementById('waMsg').focus(), 200); }
+  function closeWABubble() { document.getElementById('waBubble').classList.remove('open'); }
+
+  function sendWhatsApp() {
+    const input = document.getElementById('waMsg').value.trim();
+    const msg = input || WA_DEFAULT_MSG;
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  document.getElementById('waMsg').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendWhatsApp();
+  });
+
+  // ── CHECKOUT con WHATSAPP ─────────────────────────────────────────
+  function checkout() {
+    if (cart.length === 0) { showToast('⚠️ Tu carrito está vacío'); return; }
+    const items = cart.map(i => `• ${i.qty}x ${i.name} ($${(i.price * i.qty).toFixed(2)})`).join('\n');
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const msg = `¡Hola AugerTech! 🛒 Quiero hacer un pedido:\n\n${items}\n\n*Total: $${total.toFixed(2)}*\n\n¿Pueden confirmar disponibilidad?`;
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    cart = [];
+    updateCartUI();
+    closeCart();
+    showToast('✅ ¡Pedido enviado a WhatsApp!');
+  }
+
+  // ── CONTACT FORM ──────────────────────────────────────────────────
+  function sendContactForm() {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const subject = document.getElementById('cf-subject').value;
+    const msg = document.getElementById('cf-msg').value.trim();
+    if (!name || !email || !msg) { showToast('⚠️ Por favor completa los campos obligatorios'); return; }
+    const phone = document.getElementById('cf-phone').value.trim();
+    const waText = `📩 *Nuevo contacto desde la web*\n\n*Nombre:* ${name}\n*Email:* ${email}${phone ? '\n*Teléfono:* ' + phone : ''}\n*Asunto:* ${subject || 'No especificado'}\n\n*Mensaje:*\n${msg}`;
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}`;
+    window.open(url, '_blank');
+    document.getElementById('contactFormWrap').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>
